@@ -89,7 +89,7 @@ output "ec2_public_ip" {
 resource "aws_key_pair" "ssh-key" {
   key_name = "server-key"
   /* Use `$pwd` command to get full path && add ssh id_rsa public key */
-  public_key = file(var.my_public_key)
+  public_key = file(var.ssh_key)
 }
 
 resource "aws_instance" "myapp-server" {
@@ -105,5 +105,10 @@ resource "aws_instance" "myapp-server" {
 
   tags = {
     Name = "${var.env_prefix}-server"
+  }
+
+  provisioner "local-exec" {
+    working_dir = "/Users/martezconner/Desktop/projects/devops/ansible-base"
+    command = "ansible-playbook --inventory ${self.public_ip}, --private-key ${var.ssh_key_private} --user ec2-user deploy-docker-newuser.yaml"
   }
 }
