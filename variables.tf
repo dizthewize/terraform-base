@@ -6,3 +6,4 @@ variable my_ip {}
 variable instance_type {}
 variable ssh_key {}
 variable ssh_key_private {}
+variable image_name {}
